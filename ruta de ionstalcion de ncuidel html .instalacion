@@ -1,0 +1,122 @@
+C:\nginx-1.31.6\nginx-1.31.6\html
+  /locacion *
+  C:\nginx-1.31.6\nginx-1.31.6\html>dir
+       C:\nginx-1.31.6\nginx-1.31.6\html>dir
+ El volumen de la unidad C no tiene etiqueta.
+ El número de serie del volumen es: BF33-66B0
+
+ Directorio de C:\nginx-1.31.6\nginx-1.31.6\html
+
+07/10/2026  12:38 p. m.    <DIR>          .
+07/10/2026  12:38 p. m.    <DIR>          ..
+15/09/2026  07:54 a. m.               497 50x.html
+07/10/2026  12:19 p. m.             9,805 aw_mejorado.html
+15/09/2026  07:54 a. m.               896 index.html
+               3 archivos         11,198 bytes
+               2 dirs  164,866,191,360 bytes libres
+
+C:\nginx-1.31.6\nginx-1.31.6\html>
+/locacion*
+
+*instalacion de nguix manual de window el aw_mejorado.html es el q tira el video -(
+1. M3U8 (El formato de streaming más probable)
+
+Si encontraste este término en internet intentando descargar o reproducir un video, lo que buscas es M3U8.
+• ¿Qué es? No es un archivo de video en sí, sino un archivo de texto que contiene una lista de reproducción.
+• ¿Cómo funciona? Los servidores web lo usan para transmitir video por streaming (tecnología HLS). El archivo le indica al reproductor dónde encontrar los pequeños fragmentos de video indexados en internet para reproducirlos uno tras otro de forma fluida.)
+
+*ahi el archivivo de C:\nginx-1.31.6\nginx-1.31.6\conf la ruta es /spiderman2026.conf y asi es dentro de spiderman2026.conf
+    ｛ server {
+    listen 80;
+    server_name localhost;
+
+    root C:/nginx-1.31.6/nginx-1.31.6/html;
+    index aw_mejorado.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # ==========================================
+    # MASTER
+    # ==========================================
+
+    location = /spiderman2026.m3u8 {
+        proxy_pass https://lkhjerbhye3wjkhodvh5xiczuvd.lol/stream/Vq8h-mG2CzgXOkXyEzvm9w/hjkrhuihghfvu/1791431876/43357069/master.m3u8;
+
+        proxy_set_header Host lkhjerbhye3wjkhodvh5xiczuvd.lol;
+        proxy_set_header Referer https://lkhjerbhye3wjkhodvh5xiczuvd.lol/;
+        proxy_set_header Origin https://lkhjerbhye3wjkhodvh5xiczuvd.lol;
+        proxy_set_header User-Agent "Mozilla/5.0";
+
+        proxy_ssl_server_name on;
+
+        proxy_buffering off;
+        proxy_cache off;
+
+        add_header Access-Control-Allow-Origin *;
+    }
+
+    # ==========================================
+    # VIDEO 1152x480
+    # ==========================================
+
+    location = /index-f1-v1-a1.m3u8 {
+        proxy_pass https://lkhjerbhye3wjkhodvh5xiczuvd.lol/stream/Vq8h-mG2CzgXOkXyEzvm9w/hjkrhuihghfvu/1791431876/43357069/index-f1-v1-a1.m3u8;
+
+        proxy_set_header Host lkhjerbhye3wjkhodvh5xiczuvd.lol;
+        proxy_set_header Referer https://lkhjerbhye3wjkhodvh5xiczuvd.lol/;
+        proxy_set_header Origin https://lkhjerbhye3wjkhodvh5xiczuvd.lol;
+        proxy_set_header User-Agent "Mozilla/5.0";
+
+        proxy_ssl_server_name on;
+
+        proxy_buffering off;
+        proxy_cache off;
+
+        add_header Access-Control-Allow-Origin *;
+    }
+
+    # ==========================================
+    # VIDEO 1728x720
+    # ==========================================
+
+    location = /index-f2-v1-a1.m3u8 {
+        proxy_pass https://lkhjerbhye3wjkhodvh5xiczuvd.lol/stream/Vq8h-mG2CzgXOkXyEzvm9w/hjkrhuihghfvu/1791431876/43357069/index-f2-v1-a1.m3u8;
+
+        proxy_set_header Host lkhjerbhye3wjkhodvh5xiczuvd.lol;
+        proxy_set_header Referer https://lkhjerbhye3wjkhodvh5xiczuvd.lol/;
+        proxy_set_header Origin https://lkhjerbhye3wjkhodvh5xiczuvd.lol;
+        proxy_set_header User-Agent "Mozilla/5.0";
+
+        proxy_ssl_server_name on;
+
+        proxy_buffering off;
+        proxy_cache off;
+
+        add_header Access-Control-Allow-Origin *;
+    }
+
+    # ==========================================
+    # SEGMENTOS HLS
+    # ==========================================
+
+    location ~* \.(ts|m4s|aac|mp4|key)$ {
+        proxy_pass https://lkhjerbhye3wjkhodvh5xiczuvd.lol;
+
+        proxy_set_header Host lkhjerbhye3wjkhodvh5xiczuvd.lol;
+        proxy_set_header Referer https://lkhjerbhye3wjkhodvh5xiczuvd.lol/;
+        proxy_set_header Origin https://lkhjerbhye3wjkhodvh5xiczuvd.lol;
+        proxy_set_header User-Agent "Mozilla/5.0";
+
+        proxy_ssl_server_name on;
+
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_read_timeout 300s;
+
+        add_header Access-Control-Allow-Origin *;
+    }
+} * es la configuracion de eso de lo q hable ***
+
+︹fin〖
