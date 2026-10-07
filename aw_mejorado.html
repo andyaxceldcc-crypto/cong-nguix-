@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andy Net-Stream Pro - Nginx Direct</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #131b2e;
+            --accent-color: #e50914;
+            --accent-hover: #b20710;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 950px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            max-height: 520px;
+            display: block;
+            cursor: pointer;
+        }
+
+        .custom-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+            padding: 20px 20px 12px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-filled {
+            height: 100%;
+            background: var(--accent-color);
+            border-radius: 3px;
+            width: 0%;
+        }
+
+        .controls-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .controls-left, .controls-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ctrl-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.1s;
+            padding: 0;
+        }
+
+        .ctrl-btn:hover {
+            color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .time-display {
+            font-size: 13px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .status-bar {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            background: rgba(229, 9, 20, 0.15);
+            color: #f87171;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+            border: 1px solid rgba(229, 9, 20, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fa-solid fa-play-circle"></i> Andy Nginx Stream Pro</h1>
+        <p>Reproductor nativo optimizado con Nginx puro</p>
+    </header>
+
+    <div class="main-container">
+        <div class="video-container" id="videoContainer">
+            <video id="video"></video>
+            
+            <div class="custom-controls" id="customControls">
+                <div class="progress-bar-container" id="progressBar">
+                    <div class="progress-filled" id="progressFilled"></div>
+                </div>
+
+                <div class="controls-row">
+                    <div class="controls-left">
+                        <button class="ctrl-btn" id="playPauseBtn" title="Reproducir / Pausar"><i class="fa-solid fa-play" id="playIcon"></i></button>
+                        <button class="ctrl-btn" id="muteBtn" title="Silenciar"><i class="fa-solid fa-volume-high" id="volumeIcon"></i></button>
+                        <div class="time-display" id="timeDisplay">00:00 / 00:00</div>
+                    </div>
+                    <div class="controls-right">
+                        <button class="ctrl-btn" id="fullscreenBtn" title="Pantalla Completa"><i class="fa-solid fa-expand"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <span id="status">Estado: Conectando a Nginx...</span>
+            <span class="badge"><i class="fa-solid fa-shield-halved"></i> Bypass Nativo Activo</span>
+        </div>
+    </div>
+
+    <script>
+        // Apunta directamente a tu ruta limpia configurada en Nginx
+        const STREAM_URL = "/spiderman2026.m3u8";
+
+        const video = document.getElementById('video');
+        const statusDiv = document.getElementById('status');
+        const videoContainer = document.getElementById('videoContainer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playIcon = document.getElementById('playIcon');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeIcon = document.getElementById('volumeIcon');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFilled = document.getElementById('progressFilled');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        let hls = null;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes < 10 ? '0' : ''}${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        if (Hls.isSupported()) {
+            hls = new Hls();
+            hls.loadSource(STREAM_URL);
+            hls.attachMedia(video);
+            
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                statusDiv.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #4ade80;"></i> ¡Stream conectado vía Nginx!';
+                video.play().catch(e => console.log("Autoplay bloqueado:", e));
+                playIcon.className = "fa-solid fa-pause";
+            });
+
+            hls.on(Hls.Events.ERROR, function(event, data) {
+                console.error("HLS ERROR:", data);
+                statusDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i> Error de conexión (${data.details})`;
+            });
+        }
+
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+                playIcon.className = "fa-solid fa-pause";
+            } else {
+                video.pause();
+                playIcon.className = "fa-solid fa-play";
+            }
+        }
+
+        playPauseBtn.addEventListener('click', togglePlay);
+        video.addEventListener('click', togglePlay);
+
+        video.addEventListener('timeupdate', function() {
+            if (!isNaN(video.duration)) {
+                const percentage = (video.currentTime / video.duration) * 100;
+                progressFilled.style.width = percentage + '%';
+                timeDisplay.innerText = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+            }
+        });
+
+        progressBar.addEventListener('click', function(e) {
+            const rect = progressBar.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            if (!isNaN(video.duration)) {
+                video.currentTime = pos * video.duration;
+            }
+        });
+
+        muteBtn.addEventListener('click', function() {
+            video.muted = !video.muted;
+            volumeIcon.className = video.muted ? "fa-solid fa-volume-xmark" : "fa-solid fa-volume-high";
+        });
+
+        fullscreenBtn.addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+                videoContainer.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    </script>
+</body>
+</html>
