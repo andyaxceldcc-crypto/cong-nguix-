@@ -1,0 +1,20 @@
+C:\nginx-1.31.6\nginx-1.31.6\conf
+C:\nginx-1.31.6\nginx-1.31.6>dir
+ El volumen de la unidad C no tiene etiqueta.
+ El número de serie del volumen es: BF33-66B0
+
+ Directorio de C:\nginx-1.31.6\nginx-1.31.6
+
+15/09/2026  08:26 a. m.    <DIR>          .
+15/09/2026  08:26 a. m.    <DIR>          ..
+07/10/2026  12:38 p. m.    <DIR>          conf
+15/09/2026  07:54 a. m.    <DIR>          contrib
+15/09/2026  08:26 a. m.    <DIR>          docs
+07/10/2026  12:38 p. m.    <DIR>          html
+07/10/2026  12:54 p. m.    <DIR>          logs
+15/09/2026  08:26 a. m.         6,667,264 nginx.exe
+07/10/2026  12:20 p. m.    <DIR>          temp
+               1 archivos      6,667,264 bytes
+               8 dirs  164,865,966,080 bytes libres
+
+C:\nginx-1.31.6\nginx-1.31.6>}
